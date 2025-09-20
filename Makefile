@@ -2,6 +2,7 @@
 # Always specify the OS target when using this!
 
 # This assumes GCC, which should be prebuilt on all POSIX systems (x64)
+# Edit this to meet your preferences!
 posix:
 	@echo "Buidling POSIX target..."
 	CC := gcc

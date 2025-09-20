@@ -29,12 +29,12 @@ typedef enum {
     LMTK_INTEGER,       /* Number token - integer and floating-point numbers */
     LMTK_FLOAT,         /* Floating-point number token */
     LMTK_STRING,        /* Literal string */
-    LMTK_ARITH_ADD,     /* Arithmetic '+' */
-    LMTK_ARITH_SUB,     /* Arithmetic '-' */
-    LMTK_ARITH_MUL,     /* Arithmetic '*' */
-    LMTK_ARITH_DIV,     /* Arithmetic '/' */
-    LMTK_ARITH_MOD,     /* Arithmetic '%' */
-    LMTK_ARITH_POW,     /* Arithmetic '^' */
+    LMTK_ARITH_ADD,       /* Arithmetic '+' */
+    LMTK_ARITH_SUB,       /* Arithmetic '-' */
+    LMTK_ARITH_MUL,       /* Arithmetic '*' */
+    LMTK_ARITH_DIV,       /* Arithmetic '/' */
+    LMTK_ARITH_MOD,       /* Arithmetic '%' */
+    LMTK_ARITH_POW,       /* Arithmetic '^' */
     LMTK_ASSIGN,        /* Arithmetic '=' */
     LMTK_FUNC_DESIG,    /* Function designation 'func' */
     LMTK_LOGICAL_AND,   /* Logical AND */
