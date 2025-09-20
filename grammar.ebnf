@@ -1,0 +1,43 @@
+/*
+ * Lambda Grammar
+ * (c) 2025 samdoesnerdstuff - BSD-3-Clause
+ *
+ * This grammar is written in EBNF for clarity and future parser
+ * implementation. Semicolons are not used; statement boundaries
+ * are inferred from keywords and expression structure.
+ */
+
+/* ---------------------- Program ---------------------- */
+program     ::= { statement } ;
+
+/* ---------------------- Statements ------------------- */
+statement   ::= assignment
+              | funcdef
+              | expr ;
+
+/* ---------------------- Assignment ------------------- */
+assignment  ::= IDENT "=" expr ;
+
+/* ---------------------- Function Definition ---------- */
+funcdef     ::= "func" IDENT "(" [ param_list ] ")" block "end" ;
+
+/* ---------------------- Parameters ------------------- */
+param_list  ::= IDENT { "," IDENT } ;
+
+/* ---------------------- Block ------------------------ */
+block       ::= { statement } ;
+
+/* ---------------------- Expressions ------------------ */
+expr        ::= binop ;
+
+/* ---------------------- Binary Operations ------------ */
+binop       ::= term { ("+" | "-" | "*" | "/" | "%" | "^") term } ;
+
+/* ---------------------- Term ------------------------- */
+term        ::= factor ;
+
+/* ---------------------- Factors ---------------------- */
+factor      ::= IDENT
+              | NUMBER
+              | STRING
+              | "(" expr ")" ;
