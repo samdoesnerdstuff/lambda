@@ -192,24 +192,30 @@ void lm_lexer_reset(lm_lexer_t *lexer) {
 
 const char *lm_token_type_str(lm_token_type_t type) {
     switch (type) {
+        default:                return "UNASSIGNED_TOKEN";
         case LMTK_EOF:          return "EOF";
         case LMTK_IDENTIFIER:   return "IDENTIFIER";
         case LMTK_FUNC_DESIG:   return "FUNC_DESIG";
         case LMTK_INTEGER:      return "INTEGER";
         case LMTK_FLOAT:        return "FLOAT";
         case LMTK_STRING:       return "STRING";
-        case LMTK_ARITH_ADD:      return "ADD";
-        case LMTK_ARITH_SUB:      return "SUB";
-        case LMTK_ARITH_MUL:      return "MUL";
-        case LMTK_ARITH_DIV:      return "DIV";
-        case LMTK_ARITH_MOD:      return "MOD";
-        case LMTK_ARITH_POW:      return "POW";
+        case LMTK_ARITH_ADD:    return "ADD";
+        case LMTK_ARITH_SUB:    return "SUB";
+        case LMTK_ARITH_MUL:    return "MUL";
+        case LMTK_ARITH_DIV:    return "DIV";
+        case LMTK_ARITH_MOD:    return "MOD";
+        case LMTK_ARITH_POW:    return "POW";
         case LMTK_LOGICAL_AND:  return "LOGICAL_AND";        
         case LMTK_LOGICAL_OR:   return "LOGICAL_OR";
         case LMTK_LOGICAL_NOT:  return "LOGICAL_NOT";
         case LMTK_ASSIGN:       return "ASSIGN";
         case LMTK_UNKNOWN:      return "UNKNOWN";
-        default:                return "???";
+        case LMTK_COMP_EQ:      return "COMP_EQUAL";
+        case LMTK_COMP_NEQ:     return "COMP_NOT_EQUAL";
+        case LMTK_COMP_LT:      return "COMP_LESS_THAN";
+        case LMTK_COMP_LTE:     return "COMP_LESS_OR_EQUAL";
+        case LMTK_COMP_GT:      return "COMP_GREATER_THAN";
+        case LMTK_COMP_GTE:     return "COMP_GREATER_OR_EQUAL";
     }
 }
 
