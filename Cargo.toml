@@ -1,0 +1,44 @@
+[package]
+name = "lambda"
+version = "0.1.0-prealpha"
+edition = "2024"
+license = "Apache-2.0"
+authors = ["samdoesnerdstuff", "github.com/samdoesnerdstuff/lambda"]
+description = "Lambda: a lightweight procedural programming language, simple like Lua, performant like C."
+readme = "README.md"
+repository = "https://github.com/samdoesnerdstuff/lambda"
+keywords = ["compiler", "language", "parser", "procedural", "rust"]
+categories = ["compilers", "development-tools", "programming-languages"]
+rust-version = "1.86.0"
+
+[[bin]]
+name = "lamc"
+path = "src/main.rs"
+
+[dependencies]
+anyhow = "1.0.100"
+chumsky = "0.11.1"
+clap = { version = "4.5.48", features = ["derive"] }
+colored = "3.0.0"
+indicatif = "0.18.0"
+serde = "1.0.228"
+thiserror = "2.0.17"
+toml = "0.9.7"
+
+[profile.dev]
+opt-level = 0
+debug = true
+overflow-checks = true
+incremental = true
+codegen-units = 256
+lto = "off"
+panic = "unwind"
+
+[profile.release]
+opt-level = 3
+debug = false
+overflow-checks = false
+lto = "thin"
+codegen-units = 1
+strip = "symbols"
+panic = "abort"
