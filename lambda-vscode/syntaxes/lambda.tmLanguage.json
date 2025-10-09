@@ -1,0 +1,135 @@
+{
+  "name": "Lambda",
+  "scopeName": "source.lambda",
+  "fileTypes": ["lm"],
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#strings" },
+    { "include": "#numbers" },
+    { "include": "#keywords" },
+    { "include": "#types" },
+    { "include": "#declarations" },
+    { "include": "#operators" }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.exclamation.lambda",
+          "match": "/!.*$"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.lambda",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            {
+              "name": "constant.character.escape.lambda",
+              "match": "\\\\."
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.lambda",
+          "begin": "'",
+          "end": "'",
+          "patterns": [
+            {
+              "name": "constant.character.escape.lambda",
+              "match": "\\\\."
+            }
+          ]
+        }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        {
+          "name": "constant.numeric.lambda",
+          "match": "\\b\\d+(?:\\.\\d+)?\\b"
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.lambda",
+          "match": "\\b(if|else|for|while|return|end|then|do|require|let|const|fn|class|local|import|export|match|case|break|continue|in|and|or|not)\\b"
+        },
+        {
+          "name": "constant.language.lambda",
+          "match": "\\b(true|false|null)\\b"
+        }
+      ]
+    },
+    "types": {
+      "patterns": [
+        {
+          "name": "storage.type.annotation.lambda",
+          "match": "(:|->)\\s*[A-Za-z_][A-Za-z0-9_]*"
+        },
+        {
+          "name": "support.type.builtin.lambda",
+          "match": "\\b(integer|float|string|bool)\\b"
+        }
+      ]
+    },
+    "declarations": {
+      "patterns": [
+        {
+          "name": "meta.function.lambda",
+          "begin": "\\bfn\\s+([A-Za-z_][A-Za-z0-9_]*)",
+          "beginCaptures": {
+            "1": { "name": "entity.name.function.lambda" }
+          },
+          "end": "(?=end|$)",
+          "patterns": [
+            { "include": "#parameters" },
+            { "include": "#statements" }
+          ]
+        },
+        {
+          "name": "meta.class.lambda",
+          "begin": "\\bclass\\s+([A-Za-z_][A-Za-z0-9_]*)",
+          "beginCaptures": {
+            "1": { "name": "entity.name.type.class.lambda" }
+          },
+          "end": "(?=end|$)",
+          "patterns": [
+            { "include": "#statements" }
+          ]
+        }
+      ]
+    },
+    "parameters": {
+      "patterns": [
+        {
+          "name": "variable.parameter.lambda",
+          "match": "\\b[A-Za-z_][A-Za-z0-9_]*\\b"
+        }
+      ]
+    },
+    "statements": {
+      "patterns": [
+        { "include": "#strings" },
+        { "include": "#numbers" },
+        { "include": "#keywords" },
+        { "include": "#types" },
+        { "include": "#operators" }
+      ]
+    },
+    "operators": {
+      "patterns": [
+        {
+          "name": "keyword.operator.lambda",
+          "match": "(\\+|\\-|\\*|\\/|==|!=|<=|>=|<|>|=|\\+\\+|\\-\\-|\\.|:|->|\\|\\||&&)"
+        }
+      ]
+    }
+  },
+  "uuid": "1d0d4a2a-5779-4414-8b0e-c7897ecca9fb"
+}

@@ -1,0 +1,28 @@
+{
+  "name": "lambda-lang",
+  "displayName": "Lambda Language Support",
+  "description": "Syntax highlighting for the Lambda programming language.",
+  "version": "0.1.0",
+  "publisher": "samdoesnerdstuff",
+  "engines": {
+    "vscode": "^1.70.0"
+  },
+  "categories": ["Programming Languages"],
+  "contributes": {
+    "languages": [
+      {
+        "id": "lambda",
+        "aliases": ["Lambda", "lambda"],
+        "extensions": [".lm"],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "lambda",
+        "scopeName": "source.lambda",
+        "path": "./syntaxes/lambda.tmLanguage.json"
+      }
+    ]
+  }
+}
