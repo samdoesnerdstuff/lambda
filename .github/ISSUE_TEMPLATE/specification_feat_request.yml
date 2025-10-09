@@ -1,5 +1,5 @@
 # Have a suggestion for the spec itself? This is place to talk about it!
-name: "Spec Feature Request"
+name: "Specification Feature Request"
 description: "Have a suggestion for the Lambda language specification? This is the place to talk about it!"
 labels: ["spec", "enhancement"]
 body:
