@@ -1,0 +1,33 @@
+# Any other kinda bug or issue? This generic template is for you!
+name: "General Bug Report"
+description: "Any other kind of bug or issue? This generic template is for you!"
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        # Any other kind of bug or issue? This generic template is for you!
+        Use this for documentation issues, odd behavior, or anything not covered by the other templates.
+
+  - type: input
+    id: summary
+    attributes:
+      label: "Summary"
+      placeholder: "Brief one-line description of the bug."
+
+  - type: textarea
+    id: details
+    attributes:
+      label: "Details"
+      description: "Explain what you observed and how to reproduce it."
+      placeholder: "Steps, logs, screenshots, source code if possible, etc."
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: "Severity"
+      options:
+        - Minor
+        - Moderate
+        - Critical
+      default: 0

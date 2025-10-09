@@ -1,0 +1,31 @@
+# Have a suggestion for the spec itself? This is place to talk about it!
+name: "Spec Feature Request"
+description: "Have a suggestion for the Lambda language specification? This is the place to talk about it!"
+labels: ["spec", "enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        # Have a suggestion for the spec itself? This is the place to talk about it!
+        Please describe what feature or change you'd like to see added to the **Lambda Language Specification**.
+
+  - type: input
+    id: title
+    attributes:
+      label: "Feature Name"
+      description: "A short name for the proposed addition."
+      placeholder: "Example: Add pattern matching to functions"
+
+  - type: textarea
+    id: description
+    attributes:
+      label: "Detailed Proposal"
+      description: "Explain the feature, motivation, and potential syntax or semantics."
+      placeholder: "Describe the change in detail..."
+
+  - type: textarea
+    id: rationale
+    attributes:
+      label: "Rationale"
+      description: "Why should this be part of the language spec?"
+      placeholder: "Explain what problem this solves and why it fits Lambda."

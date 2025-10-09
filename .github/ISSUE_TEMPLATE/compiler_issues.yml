@@ -1,0 +1,34 @@
+# Something wrong with the compiler or its outputs? This is the place to report it!
+name: "Compiler Issue"
+description: "Something wrong with the compiler or its outputs? This is the place to report it!"
+labels: ["compiler", "bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        # Something wrong with the compiler or its outputs? This is the place to report it!
+        Please describe what went wrong when building or running Lambda code.
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: "Describe the Problem"
+      description: "What did you expect to happen, and what actually happened?"
+      placeholder: "Steps to reproduce, expected vs. actual behavior..."
+
+  - type: input
+    id: version
+    attributes:
+      label: "Compiler Version"
+      placeholder: "lamc 0.0.1-alpha"
+
+  - type: textarea
+    id: code
+    attributes:
+      label: "Sample Code (if applicable)"
+      render: shell
+      description: "Provide a minimal code sample that reproduces the issue."
+      placeholder: |
+        fn main() -> null
+            print("Hello, developer!")
+        end
