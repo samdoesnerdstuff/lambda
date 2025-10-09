@@ -1,0 +1,35 @@
+/! Sample code of Lambda intrinsics
+/! This sample code will update as the spec changes
+/!
+/! Since these use only the intrinsics of Lambda, these can be ran "as-is" :D
+
+
+/! Example #1!: read() / write()
+fn get_name() -> string
+    name = read("What is your name: ")
+    return name
+end
+
+fn main() -> null
+    name = get_name()
+    write("hello %name!")
+end
+
+/! Example #2: length() and typeof()
+fn is_word_len_prime(word: string) -> bool
+    if typeof(word) not "string" then
+        return false
+    else
+        len = length(word)
+        for i = 0; i <= len; i++ do
+            if i % len not 0 then
+                return false
+        end
+
+        return true
+    end
+end
+
+/! Example #3: asserting something
+let something: any = 3.1415926
+assert((typeof(something) == "integer"), "This is not an integer!")
