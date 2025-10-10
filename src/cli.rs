@@ -21,7 +21,7 @@ pub enum Commands {
 
 pub fn run() -> Result<()> {
     let cli = Cli::parse();
-    let version = "1.90.0"; // manual update with rust updates i guess
+    let rs_version = "1.90.0"; // manual update with rust updates i guess
 
     match cli.command {
         Commands::Run { file } => {
@@ -33,8 +33,10 @@ pub fn run() -> Result<()> {
         }
 
         Commands::Info => {
-            println!("Lambda Compiler {}", env!("CARGO_PKG_VERSION"));
-            println!("Built with Rust {}", version.to_string());
+            println!("Lambda Compiler: {}", env!("CARGO_PKG_VERSION"));
+            println!("Built with Rust: {}", rs_version.to_string());
+            println!("Targeting arch: {}", std::env::var("CARGO_CFG_TARGET_ARCH").unwrap_or("UNKNOWN".to_string()));
+            println!("For OS: {}", std::env::var("CARGO_CFG_TARGET_OS").unwrap_or("UNKNOWN".to_string()));
         }
     }
 
