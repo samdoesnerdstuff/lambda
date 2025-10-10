@@ -17,7 +17,7 @@ body:
   - type: textarea
     id: description
     attributes:
-      label: "Detailed Proposal"
+      label: "Proposal"
       description: "Explain the feature, motivation and general purpose"
       placeholder: "Describe the changes in detail..."
 
