@@ -10,8 +10,8 @@ Lambda is a lightweight, procedural programming language with the simplicity of 
 ```
     ⣶⣶⣶⣶⡆               lambda:
     ⠛⠛⢻⣿⣿⡀                * simple & elegant
-    ⠀⠀⢀⣿⣿⣷                * expressive
-    ⠀⢀⣾⣿⣿⣿⣇               * powerful
+    ⠀⠀⢀⣿⣿⣷                 * expressive
+    ⠀⢀⣾⣿⣿⣿⣇                * powerful
 ⠀ ⠀⠀⢠⣿⣿⡟⢹⣿⣿⡆
 ⠀   ⣰⣿⣿⠏⠀⠀⢻⣿⣿⡄
 ⠀  ⣴⣿⡿⠃⠀⠀⠀⠈⢿⣿⣷⣤⣤⡆⠀
