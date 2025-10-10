@@ -5,8 +5,6 @@
 ![Static Badge](https://img.shields.io/badge/Compiler-Apache--2.0-red)
 ![Static Badge](https://img.shields.io/badge/Spec-CC--BY--ND--4.0-white?logo=creativecommons&logoColor=%23FFFFFF)
 
-
-
 Lambda is a lightweight, procedural programming language with the simplicity of Lua and the performance of C.
 
 ```
@@ -40,10 +38,6 @@ end
 
 This language has been heavily inspired by languages like Lua, C and type-strict languages. 
 
-## Who is Lambda *for?*
-
-Lambda is for the developer who just wants a language that's very fast to write, can handle its own memory and just *works* for general purpose development. Lambda was not designed with one specific paradigm in mind 24/7, it was designed to be a strongly typed language that almost anybody can pick up and learn in a few weeks, like Python!
-
 ## What makes Lambda different?
 
 Lambda is unlike any language in its ecosystem. Designed to be elegant, expressive, and powerful. It brings together the compiled performance of native applications with the DX and the rapid prototyping of Lua. Its strong type system is derived from languages like C++ and Java where types are always required. Its OOP model is directly based off of Python's OOP systems.
@@ -51,6 +45,10 @@ Lambda is unlike any language in its ecosystem. Designed to be elegant, expressi
 Lambda also plans on having an FFI for C libraries, immediately opening up a **vast library** of software from all corners of the programming space.
 
 Lambda also has a simple, but powerful buildsystem. Much like other compiler projects before it, Lambda is purely CLI and is planned on having a vast array of build flags, optimizations, inclusions, everything a developer would need.
+
+## Who is Lambda *for?*
+
+Lambda is for the developer who just wants a language that's very fast to write, can handle its own memory and just *works* for general purpose development. Lambda was not designed with one specific paradigm in mind 24/7, it was designed to be a strongly typed language that almost anybody can pick up and learn in a few weeks, like Python!
 
 ## Getting Started
 
