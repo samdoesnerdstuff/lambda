@@ -4,7 +4,7 @@
 /! Since these use only the intrinsics of Lambda, these can be ran "as-is" :D
 
 
-/! Example #1!: read() / write()
+/! Example #1: read() / write() and write formatting with %
 fn get_name() -> string
     name = read("What is your name: ")
     return name
