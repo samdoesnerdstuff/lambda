@@ -8,8 +8,13 @@ Once formal releases begin, this section will list supported versions for securi
 | Version | Supported |
 |----------|------------|
 | main (development) | ✅ |
-| pre-release tags (v0.x) | ❌ |
+| pre-release tags (v0.x) | 🛠️ Varies<sup>1</sup> |
+| release tags (v1.x) | 🛠️ Varies<sup>2</sup> |
 | older commits | ❌ |
+
+<sup>1</sup>Pre-release versions (v0.x) may not receive security updates or backports. \
+<sup>2</sup>Only the latest stable release in each major series (v1.x) is actively maintained.
+For changes such as (v1.x)->(v2.x), all prior versions are immediately marked EOL and will not recieve prioritized updates.
 
 ---
 
