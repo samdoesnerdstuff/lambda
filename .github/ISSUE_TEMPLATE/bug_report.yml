@@ -1,6 +1,6 @@
 # Any other kinda bug or issue? This generic template is for you!
 name: "General Bug Report"
-description: "Any other kind of bug or issue? This generic template is for you!"
+description: "Any other kind of bug or issue? This template is for you!"
 labels: ["bug"]
 body:
   - type: markdown

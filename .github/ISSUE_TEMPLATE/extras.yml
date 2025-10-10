@@ -1,0 +1,30 @@
+name: "Repo Extras"
+description: "Anything else? Maybe something for the repo or even something external to it?"
+labels: ["enhancement", "extras"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        # Something that you'd like to suggest? This is the place to go!
+
+  - type: input
+    id: title
+    attributes:
+      label: "Suggestion"
+      description: "A short name for the proposed addition."
+      placeholder: "Example: Remove all the tests"
+
+  - type: textarea
+    id: description
+    attributes:
+      label: "Detailed Proposal"
+      description: "Explain the feature, motivation and general purpose"
+      placeholder: "Describe the changes in detail..."
+
+  - type: textarea
+    id: rationale
+    attributes:
+      label: "Rationale"
+      description: "Why should this be part of the repository?"
+      placeholder: "Explain what problem this solves and why it fits the repository."
+    
