@@ -28,6 +28,9 @@ These are functions that you can use without calling on any modules.
 | `length()`   | `fn len(content: string) -> integer` | Returns the length of the `content` as an `integer`. |
 | `assert()`   | `fn assert(expression: bool, message: string) -> null` | Asserts `expression`, stops execution if it fails and produces `message`. |
 
+> [!NOTE]
+> When passing a variable to `write()` or `io.print()` to display, it **has** to be prefixed with **%**.
+
 ## 2. Standard Library
 
 The **Lambda Standard Library** (often abbreviated as *stdlib* or *std*) provides a core set of modules that extend the language’s capabilities. These modules are loaded using the `require` directive and form the foundation of I/O, mathematics, and system operations.
