@@ -8,13 +8,15 @@ Classes encapsulate data (fields) and behavior (methods).
 Classes are declared using the `class` keyword, followed by a name and an indented body:
 
 ```lambda
+require 'std/io.lm'
+
 class Dog
     fn __init(self, name: string)
-        self.name = name
+        self.name: string = name
     end
 
     fn bark(self)
-        print(self.name + " says woof!")
+        io.print("%self.name says woof!")
     end
 end
 ```
@@ -38,7 +40,7 @@ mydog.bark()
 Fields are attached to `self` within class methods:
 
 ```lambda
-self.fieldname = value
+self.fieldname: type = value
 ```
 
 Fields are dynamically added to instances during initialization.
@@ -51,13 +53,15 @@ They are bound to instances automatically, so `self` always refers to the curren
 Classes may inherit from one parent class:
 
 ```lambda
+require 'std/io.lm'
+
 class Cat extends Animal
     fn __init(self, name: string)
         super.__init(name)
     end
 
     fn speak(self)
-        print(self.name + " says meow!")
+        io.print("%self.name says meow!")
     end
 end
 ```
