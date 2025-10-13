@@ -29,7 +29,7 @@ fn fib(n: integer) -> integer
     return fib(n - 1) + fib(n - 2)
 end
 
-/! It's assumed that this is an integer so no types are needed yet
+/! It's assumed that this is an integer so no types are needed
 /! This may change in future revisions however
 for i = 0; i < 10; i++ do
     print(fib(i))
@@ -69,7 +69,7 @@ Once you have the repository cloned, it's as easy as running `cargo build` and y
 **Example:**
 ```sh
 cargo build --release
-./target/release/lamc run examples/hello.lm
+./target/release/lamc -s ./examples/hello.lm
 ```
 
 ## Licenses
@@ -78,7 +78,7 @@ cargo build --release
 Licensed under [Apache 2.0](./LICENSE).
 
 **Language Specification**  
-Licensed under [CC BY-ND 4.0](./spec/LICENSE_SPEC.txt).  
+Licensed under [CC BY-ND 4.0](./spec/LICENSE).  
 You may read and share it freely, but not distribute modified versions.
 
 ## Contributing / Security

@@ -36,6 +36,7 @@ Run one or multiple of the Lambda example files:
 
 ```sh
 # --run compiles and runs the code automatically!
+# When it's implemented, of course
 ./target/debug/lamc --run examples/hello.lm
 ```
 
