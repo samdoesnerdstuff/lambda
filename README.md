@@ -2,8 +2,12 @@
 
 ![Static Badge](https://img.shields.io/badge/Built_with-Rust-orange?logo=rust&logoColor=%23FFFFFF)
 
+<!-- Licenses -->
 ![Static Badge](https://img.shields.io/badge/Compiler-Apache--2.0-red)
 ![Static Badge](https://img.shields.io/badge/Spec-CC--BY--ND--4.0-white?logo=creativecommons&logoColor=%23FFFFFF)
+
+<!-- Quality code badge :3 -->
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/03886551730540f8ad5a39914370587a)](https://app.codacy.com/gh/samdoesnerdstuff/lambda/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 
 Lambda is a lightweight, procedural programming language with the simplicity of Lua and the performance of C.
 
