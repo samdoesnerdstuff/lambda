@@ -6,7 +6,11 @@
 //! 
 //! 
 
+mod lexer;
+
 use std::env;
+use colored::*;
+use lexer::lexer::lex;
 
 fn main() {
     let cli_args: Vec<String> = env::args().collect();
@@ -16,34 +20,80 @@ fn main() {
             "-help" => display_help(),
             "-version" => display_version(),
             "-help-compiler-flags" => all_compiler_flags(),
+            "-test-lex" => test_lex(),
+
+            "-s" => {
+                if let Some(path) = cli_args.iter().skip_while(|a| *a != "-s").nth(1) {
+                    match std::fs::read_to_string(path) {
+                        Ok(src) => {
+                            let tokens = lex(&src);
+                            println!("Lexer output for {}:", path);
+                            for (token, span) in tokens {
+                                println!("{:?} @@ {:?}", token, span);
+                            }
+                        }
+                        Err(e) => eprintln!("Failed to read file: \"{}\": {}", path, e),
+                    }
+                } else {
+                    eprintln!("-s flag requires a file path argument!");
+                }
+            },
             &_ => println!("")
         }
     }
 }
 
-fn display_help() {
-    println!("* Lambda Compiler");
-    println!("* Version {}", env!("CARGO_PKG_VERSION"));
-    println!("* Target Arch: {}", std::env::consts::ARCH);
-    println!("* Target OS: {}", std::env::consts::OS);
-    println!("* Usage:");
-    println!("*    -help    => Displays help menu");
-    println!("*    -version => Displays compiler version");
-    println!("*");
-    println!("* Compiler Flags:");
-    println!("*    -s => Specify source file(s) for compilation");
-    println!("*    -o => Specify output location (defaults to wherever lamc is invoked)");
-    println!("*    -wl (low,med,hi) => Compiler warning level");
-    println!("*    -opt (0-3) => Compiler optimization level");
-    println!("*");
-    println!("* For ALL compilation flags, use '-help-compiler-flags' ");
-    println!("* (Recommended that you pipe the output to a text file)");
+pub fn display_help() {
+    println!("{}", "* Lambda Compiler".bold().bright_yellow());
+    println!("* Version: {}", env!("CARGO_PKG_VERSION").bright_cyan());
+    println!("* Target Arch: {}", std::env::consts::ARCH.green());
+    println!("* Target OS: {}", std::env::consts::OS.green());
+    println!();
+    println!("{}", "* Usage:".bold().bright_yellow());
+    println!("  lamc [options]");
+    println!();
+    println!("{}", "* General Options:".bold().bright_yellow());
+    println!("  {:<20} {}", "-help".cyan(), "Display this help menu");
+    println!("  {:<20} {}", "-version".cyan(), "Display compiler version");
+    println!();
+    println!("{}", "* Compiler Flags:".bold().bright_yellow());
+    println!("  {:<20} {}", "-s <file>".cyan(), "Specify source file(s) for compilation");
+    println!("  {:<20} {}", "-o <path>".cyan(), "Specify output location");
+    println!("  {:<20} {}", "-wl <low|med|hi>".cyan(), "Set compiler warning level");
+    println!("  {:<20} {}", "-opt <low|med|hi>".cyan(), "Set compiler optimization level");
+    println!("  {:<20} {}", "-entry <func>".cyan(), "Change entry point from main to <func>");
+    println!();
+    println!("{}", "* Notes:".bold().bright_yellow());
+    println!(
+        "  {}",
+        "Use '-help-compiler-flags' for detailed documentation on compiler flags."
+            .truecolor(180, 180, 180)
+    );
+    println!(
+        "  {}",
+        "Output can be piped to a file for easier reading and navigation."
+            .truecolor(180, 180, 180)
+    );
 }
 
-fn all_compiler_flags() {
+pub fn all_compiler_flags() {
 
 }
 
-fn display_version() {
+pub fn display_version() {
     println!("{}", env!("CARGO_PKG_VERSION"));
+}
+
+pub fn test_lex() {
+    let source = r#"
+        fn hello()
+            write("hello!")
+        end
+    "#;
+
+    let tokens = lex(source);
+    println!("Lexer Output:");
+    for (token, span) in tokens {
+        println!("{:?} @ {:?}", token, span);
+    }
 }
