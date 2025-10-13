@@ -6,14 +6,32 @@
 //! 
 //! 
 
+// code style is OK, this is to make sure logic and performance aren't abysmal
+#![warn(clippy::perf, clippy::correctness)]
+#![allow(
+    clippy::style,
+    clippy::pedantic,
+    clippy::nursery,
+    clippy::too_many_lines,
+    clippy::needless_lifetimes,
+    clippy::needless_return
+)]
+
 mod lexer;
+mod parser;
 
 use std::env;
 use colored::*;
-use lexer::lexer::lex;
+use lexer::lex;
+use parser::Parser;
 
+#[allow(
+    unused_assignments,
+    unused_variables
+)]
 fn main() {
     let cli_args: Vec<String> = env::args().collect();
+    let mut verbose: bool = false;
     
     for arg in cli_args.iter().skip(1) {
         match arg.as_str() {
@@ -21,6 +39,8 @@ fn main() {
             "-version" => display_version(),
             "-help-compiler-flags" => all_compiler_flags(),
             "-test-lex" => test_lex(),
+            "-test-parse" => test_parse(),
+            "-verbose" => { verbose = true },
 
             "-s" => {
                 if let Some(path) = cli_args.iter().skip_while(|a| *a != "-s").nth(1) {
@@ -38,6 +58,7 @@ fn main() {
                     eprintln!("-s flag requires a file path argument!");
                 }
             },
+
             &_ => println!("")
         }
     }
@@ -55,6 +76,7 @@ pub fn display_help() {
     println!("{}", "* General Options:".bold().bright_yellow());
     println!("  {:<20} {}", "-help".cyan(), "Display this help menu");
     println!("  {:<20} {}", "-version".cyan(), "Display compiler version");
+    println!("  {:<20} {}", "-verbose".cyan(), "Display verbose info during compilation.");
     println!();
     println!("{}", "* Compiler Flags:".bold().bright_yellow());
     println!("  {:<20} {}", "-s <file>".cyan(), "Specify source file(s) for compilation");
@@ -96,4 +118,17 @@ pub fn test_lex() {
     for (token, span) in tokens {
         println!("{:?} @ {:?}", token, span);
     }
+}
+
+pub fn test_parse() {
+    let source = r#"
+        fn hello()
+            write("hello!")
+        end
+    "#;
+
+    let tokens = lex(source);
+    let mut parser = Parser::new(tokens);
+    let ast = parser.parse();
+    println!("{:#?}", ast);
 }
