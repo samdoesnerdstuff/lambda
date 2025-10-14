@@ -9,6 +9,7 @@ pub enum Token {
     Float(f64),
     Bool(bool),
     String(String),
+    Type(String),
 
     // Identifiers
     Identifier(String),
@@ -192,6 +193,8 @@ pub fn lex(source: &str) -> Vec<(Token, Span)> {
                     "true" => Token::Bool(true),
                     "false" => Token::Bool(false),
                     "null" => Token::Null,
+
+                    "int" | "float" | "bool" | "string" => Token::Type(ident),
                     _ => Token::Identifier(ident),
                 };
 
@@ -279,11 +282,12 @@ mod tests {
 
     #[test]
     fn test_complex_fn_call() {
-        let src = "fn greet(name) write(\"hi \" + name) end";
+        let src = "fn greet(name: string) write(\"hi \" + name) end";
         let expected = vec![
-            "Fn", "Identifier(\"greet\")", "LParen", "Identifier(\"name\")", "RParen",
-            "Identifier(\"write\")", "LParen", "String(\"hi \")", "Plus", "Identifier(\"name\")", "RParen",
-            "End", "EOF"
+            "Fn", "Identifier(\"greet\")", "LParen", "Identifier(\"name\")", 
+            "Colon", "Type(\"string\")", "RParen", "Identifier(\"write\")", 
+            "LParen", "String(\"hi \")", "Plus", "Identifier(\"name\")", 
+            "RParen", "End", "EOF"
         ];
         assert_eq!(lex_to_strings(src), expected);
     }
