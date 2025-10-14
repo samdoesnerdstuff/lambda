@@ -194,7 +194,7 @@ pub fn lex(source: &str) -> Vec<(Token, Span)> {
                     "false" => Token::Bool(false),
                     "null" => Token::Null,
 
-                    "int" | "float" | "bool" | "string" => Token::Type(ident),
+                    "integer" | "float" | "bool" | "string" => Token::Type(ident),
                     _ => Token::Identifier(ident),
                 };
 
