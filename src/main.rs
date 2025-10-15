@@ -18,6 +18,7 @@
 )]
 
 mod lexer;
+mod typecheck;
 mod parser;
 
 use std::env;
@@ -25,6 +26,7 @@ use colored::*;
 use lexer::lex;
 use parser::{Parser, ParseError};
 use parser::ast::Stmt;
+use typecheck::typecheck;
 
 #[allow(
     unused_assignments,
@@ -137,15 +139,20 @@ pub fn compile_source(source: &str, verbose: bool) -> Result<Vec<Stmt>, ParseErr
     // Lexing step
     let tokens = lex(source, verbose);
 
+    if verbose {
+        println!("LEXER: {:?}", tokens);
+    }
+
     // Parsing step
     let mut parser = Parser::new(tokens);
-    parser.parse()
 
-    // AST Generation
+    // AST
+    let ast = parser.parse()?;
 
-    // Analysis & Optimization (optional ofc)
+    if verbose {
+        println!("PARSED AST: {:?}", ast);
+    }
 
-    // Codegen (To LambdaIR)
-
-    // Bin (From LIR to Cranelift IR, to bin)
+    // Check those types!
+    typecheck(&ast);
 }
