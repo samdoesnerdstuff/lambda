@@ -5,6 +5,26 @@ pub mod ast;
 
 use crate::lexer::{Token, Span};
 use ast::*;
+
+#[derive(Debug)]
+pub enum ParseError {
+    UnexpectedToken(String),
+    MissingEndBlock,
+    MissingReturnValue,
+    MissingTypeAnnotation,
+    UnexpectedEOF,
+    DuplicateParameter(String),
+    ExpectedFunctionName,
+
+    TypeMismatch { expected: String, found: String},
+    BadTypeCoercion { expected: String, found: String },
+    UnknownType(String),
+    TypeInferenceConflict(String),
+    ReturnTypeMismatch { expected: String, found: String },
+
+    DivideByZero,
+}
+
 pub struct Parser {
     tokens: Vec<(Token, Span)>,
     current: usize,
@@ -15,19 +35,15 @@ impl Parser {
         Parser { tokens, current: 0 }
     }
 
-    pub fn parse(&mut self) -> Vec<Stmt> {
+    pub fn parse(&mut self) -> Result<Vec<Stmt>, ParseError> {
         let mut statements = Vec::new();
 
         while !self.is_at_end() {
-            if let Some(stmt) = self.declaration() {
-                statements.push(stmt);
-            } else {
-                println!("Bad token Found");
-                self.advance();
-            }
+            let stmt = self.declaration()?;
+            statements.push(stmt);
         }
 
-        statements
+        Ok(statements)
     }
 
     //
@@ -74,52 +90,53 @@ impl Parser {
     // High-level parse rules
     //
 
-    fn declaration(&mut self) -> Option<Stmt> {
+    fn declaration(&mut self) -> Result<Stmt, ParseError> {
         match self.peek().0 {
             Token::Fn => self.fn_declaration(),
             _ => self.statement(),
         }
     }
 
-    fn fn_declaration(&mut self) -> Option<Stmt> {
-        self.advance(); // consume 'fn'
+    fn fn_declaration(&mut self) -> Result<Stmt, ParseError> {
+       self.advance();
 
-        let name = if let Token::Identifier(ref n) = self.advance().0 {
-            n.clone()
-        } else {
-            eprintln!("Expected function name after 'fn'");
-            return None;
+       let name = match &self.advance().0 {
+            Token::Identifier(n) => n.clone(),
+            _ => return Err(ParseError::ExpectedFunctionName),
         };
 
-        self.advance(); // '('
+        if !self.match_token(&[Token::LParen]) {
+            return Err(ParseError::UnexpectedToken("Expected '(' after function name".into()));
+        }
+
         let mut params = Vec::new();
 
-        while let Token::Identifier(ref p) = self.peek().0 {
+        while let Token::Identifier(ref _p) = self.peek().0 {
             if let Token::Identifier(param) = self.advance().0.clone() {
+                if params.contains(&param) {
+                    return Err(ParseError::DuplicateParameter(param));
+                }
                 params.push(param);
             }
         }
 
-        self.advance(); // ')'
+        if !self.match_token(&[Token::RParen]) {
+            return Err(ParseError::UnexpectedToken("Expected ')' after parameters".into()));
+        }
 
         let mut body = Vec::new();
         while !matches!(self.peek().0, Token::End | Token::EOF) {
-            if let Some(stmt) = self.statement() {
-                body.push(stmt);
-            } else {
-                self.advance();
-            }
+            body.push(self.statement()?);
         }
 
-        if self.match_token(&[Token::End]) {
-            Some(Stmt::Fn { name, params, body })
-        } else {
-            eprintln!("Expected 'end' after function body");
-            None
+        if !self.match_token(&[Token::End]) {
+            return Err(ParseError::MissingEndBlock);
         }
+
+        Ok(Stmt::Fn { name, params, body })
     }
 
-    fn statement(&mut self) -> Option<Stmt> {
+    fn statement(&mut self) -> Result<Stmt, ParseError> {
         match self.peek().0 {
             Token::Return => self.return_statement(),
             Token::If => self.if_statement(),
@@ -127,12 +144,12 @@ impl Parser {
         }
     }
 
-    fn expression_statement(&mut self) -> Option<Stmt> {
+    fn expression_statement(&mut self) -> Result<Stmt, ParseError> {
         let expr = self.expression()?;
-        Some(Stmt::Expr(expr))
+        Ok(Stmt::Expr(expr))
     }
 
-    fn return_statement(&mut self) -> Option<Stmt> {
+    fn return_statement(&mut self) -> Result<Stmt, ParseError> {
         self.advance(); // consume 'return'
 
         let expr = if !matches!(self.peek().0, Token::End | Token::EOF) {
@@ -141,77 +158,83 @@ impl Parser {
             None
         };
 
-        Some(Stmt::Return(expr))
+        Ok(Stmt::Return(expr))
     }
 
-    fn if_statement(&mut self) -> Option<Stmt> {
+    fn if_statement(&mut self) -> Result<Stmt, ParseError> {
         self.advance(); // consume 'if'
         let condition = self.expression()?;
-
         let mut then_branch = Vec::new();
-        let mut else_branch = None;
 
-        // Parse then-block
         while !matches!(self.peek().0, Token::Else | Token::End | Token::EOF) {
-            if let Some(stmt) = self.statement() {
-                then_branch.push(stmt);
-            } else {
-                self.advance();
-            }
+            then_branch.push(self.statement()?);
         }
 
-        // Optional else-block
-        if self.match_token(&[Token::Else]) {
-            let mut else_stmts = Vec::new();
+        let else_branch = if self.match_token(&[Token::Else]) {
+            let mut stmts = Vec::new();
             while !matches!(self.peek().0, Token::End | Token::EOF) {
-                if let Some(stmt) = self.statement() {
-                    else_stmts.push(stmt);
-                } else {
-                    self.advance();
-                }
+                stmts.push(self.statement()?)   
             }
-            else_branch = Some(else_stmts);
-        }
+            Some(stmts)
+        } else {
+            None
+        };
 
         if !self.match_token(&[Token::End]) {
-            eprintln!("Expected 'end' after if/else block");
+            return Err(ParseError::MissingEndBlock);
         }
-
-        Some(Stmt::If { condition, then_branch, else_branch })
+ 
+        Ok(Stmt::If { condition, then_branch, else_branch })
     }
 
-    fn expression(&mut self) -> Option<Expr> {
+    fn expression(&mut self) -> Result<Expr, ParseError> {
         match &self.peek().0 {
             Token::Integer(n) => {
                 let val = *n;
                 self.advance();
-                Some(Expr::Literal(Literal::Int(val)))
+                Ok(Expr::Literal(Literal::Int(val)))
             }
             Token::Float(f) => {
                 let val = *f;
                 self.advance();
-                Some(Expr::Literal(Literal::Float(val)))
+                Ok(Expr::Literal(Literal::Float(val)))
             }
             Token::Bool(b) => {
                 let val = *b;
                 self.advance();
-                Some(Expr::Literal(Literal::Bool(val)))
+                Ok(Expr::Literal(Literal::Bool(val)))
             }
             Token::String(s) => {
                 let val = s.clone();
                 self.advance();
-                Some(Expr::Literal(Literal::String(val)))
+                Ok(Expr::Literal(Literal::String(val)))
             }
             Token::Null => {
                 self.advance();
-                Some(Expr::Literal(Literal::Null))
+                Ok(Expr::Literal(Literal::Null))
             }
             Token::Identifier(name) => {
                 let id = name.clone();
                 self.advance();
-                Some(Expr::Identifier(id))
+                Ok(Expr::Identifier(id))
             }
-            _ => None,
+            Token::Slash => {
+                self.advance();
+                let rhs = self.expression()?;
+                if let Expr::Literal(Literal::Int(0)) = rhs {
+                    Err(ParseError::DivideByZero)
+                } else {
+                    Ok(Expr::Binary {
+                        left: Box::new(Expr::Literal(Literal::Int(1))),
+                        op: Operator::Slash,
+                        right: Box::new(rhs),
+                    })
+                }
+            }
+            _ => Err(ParseError::UnexpectedToken(format!(
+                "Unexpected token: {:?} at {:?}",
+                self.peek().0, self.peek().1
+            ))),
         }
     }
 }
@@ -228,9 +251,9 @@ mod tests {
     #[test]
     fn parse_simple_fn() {
         let src = "fn greet() end";
-        let tokens = lex(src);
+        let tokens = lex(src, false);
         let mut parser = Parser::new(tokens);
-        let ast = parser.parse();
+        let ast = parser.parse().unwrap();
 
         assert_eq!(ast.len(), 1);
         match &ast[0] {
@@ -246,9 +269,9 @@ mod tests {
     #[test]
     fn parse_if_statement() {
         let src = "if true return 42 end";
-        let tokens = lex(src);
+        let tokens = lex(src, false);
         let mut parser = Parser::new(tokens);
-        let ast = parser.parse();
+        let ast = parser.parse().unwrap();
 
         assert_eq!(ast.len(), 1);
         match &ast[0] {
@@ -264,9 +287,9 @@ mod tests {
     #[test]
     fn parse_return_statement() {
         let src = "return 123";
-        let tokens = lex(src);
+        let tokens = lex(src, false);
         let mut parser = Parser::new(tokens);
-        let ast = parser.parse();
+        let ast = parser.parse().unwrap();
 
         assert_eq!(ast.len(), 1);
         match &ast[0] {

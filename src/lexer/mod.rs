@@ -60,7 +60,7 @@ pub struct Span {
     pub end: usize,
 }
 
-pub fn lex(source: &str) -> Vec<(Token, Span)> {
+pub fn lex(source: &str, verbose: bool) -> Vec<(Token, Span)> {
     let mut tokens = Vec::new();
     let mut chars = source.char_indices().peekable();
 
@@ -220,7 +220,7 @@ pub fn lex(source: &str) -> Vec<(Token, Span)> {
 #[cfg(test)]
 mod tests {
     fn lex_to_strings(src: &str) -> Vec<String> {
-        super::lex(src)
+        super::lex(src, false)
             .into_iter()
             .map(|(tok, _)| format!("{tok:?}"))
             .collect()

@@ -23,7 +23,8 @@ mod parser;
 use std::env;
 use colored::*;
 use lexer::lex;
-use parser::Parser;
+use parser::{Parser, ParseError};
+use parser::ast::Stmt;
 
 #[allow(
     unused_assignments,
@@ -46,11 +47,10 @@ fn main() {
                 if let Some(path) = cli_args.iter().skip_while(|a| *a != "-s").nth(1) {
                     match std::fs::read_to_string(path) {
                         Ok(src) => {
-                            let tokens = lex(&src);
-                            println!("Lexer output for {}:", path);
-                            for (token, span) in tokens {
-                                println!("{:?} @@ {:?}", token, span);
-                            }
+                            compile_source(&src, verbose).map_or_else(
+                                |e| eprintln!("Error during compilation: {:?}", e),
+                                |_| println!("Compilation successful!")
+                            );
                         }
                         Err(e) => eprintln!("Failed to read file: \"{}\": {}", path, e),
                     }
@@ -113,7 +113,7 @@ pub fn test_lex() {
         end
     "#;
 
-    let tokens = lex(source);
+    let tokens = lex(source, false);
     println!("Lexer Output:");
     for (token, span) in tokens {
         println!("{:?} @ {:?}", token, span);
@@ -127,8 +127,25 @@ pub fn test_parse() {
         end
     "#;
 
-    let tokens = lex(source);
+    let tokens = lex(source, false);
     let mut parser = Parser::new(tokens);
     let ast = parser.parse();
     println!("{:#?}", ast);
+}
+
+pub fn compile_source(source: &str, verbose: bool) -> Result<Vec<Stmt>, ParseError> {
+    // Lexing step
+    let tokens = lex(source, verbose);
+
+    // Parsing step
+    let mut parser = Parser::new(tokens);
+    parser.parse()
+
+    // AST Generation
+
+    // Analysis & Optimization (optional ofc)
+
+    // Codegen (To LambdaIR)
+
+    // Bin (From LIR to Cranelift IR, to bin)
 }
