@@ -24,7 +24,7 @@ These are functions that you can use without calling on any modules.
 | `to_int()`   | `fn to_int(value: any) -> integer`   | Attempt to coerce `value` into an `integer`.         |
 | `to_float()` | `fn to_float(value: any) -> float`   | Attempt to coerce `value` into a `float`.            |
 | `to_bool()`  | `fn to_bool(value: any) -> bool`     | Converts any `value` into a `bool`.                  |
-| `typeof()`   | `fn type(value: any) -> string`      | Returns the type of the `value` in a `string`.       |
+| `typeof()`   | `fn typeof(value: any) -> string`      | Returns the type of the `value` in a `string`.       |
 | `length()`   | `fn len(content: string) -> integer` | Returns the length of the `content` as an `integer`. |
 | `assert()`   | `fn assert(expression: bool, message: string) -> null` | Asserts `expression`, stops execution if it fails and produces `message`. |
 
