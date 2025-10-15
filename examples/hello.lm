@@ -1,7 +1,5 @@
 /! Hello world, in Lambda!
 
-require 'std/io.lm'
-
 fn main() -> null
-    print("Hello, Lambda!")
+    write("Hello, Lambda!")
 end
