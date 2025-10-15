@@ -1,4 +1,9 @@
+# Languages! They're cool
 *.lm linguist-language=Lambda
+*.md linguist-detectable=true
+*.md linguist-documentation=false
+
+# LF / CRLF settings
 *.rs text eol=lf
 *.toml text eol=lf
 *.sh text eol=lf
