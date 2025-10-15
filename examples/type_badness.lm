@@ -1,0 +1,11 @@
+fn main() -> null
+    let j: integer = 127
+    let k: string = "178"
+    write("%(j+k)")
+end
+
+/! This is bad since we're trying to mesh an integer to a string.
+/! The compiler can probably infer this and do on-the-fly type coercion by 
+/! inserting the to_int(k) function in the expression. But if you're trying to 
+/! stringify j and append it to k, well, you can see why this raises a type err
+/! during compilation.
